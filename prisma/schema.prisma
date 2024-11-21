@@ -22,3 +22,13 @@ model Waiter {
   createAt DateTime @db.Date @default(now())
   updatedAt DateTime @db.Date @updatedAt
 }
+
+model Dish {
+  id String @id @unique @default(uuid()) @db.Uuid
+  name String @db.VarChar(100)
+  price Float @db.Real
+  description String @db.Text
+  category_id String? @unique @db.Uuid 
+  createAt DateTime @db.Date @default(now())
+  updatedAt DateTime @db.Date @updatedAt
+}
