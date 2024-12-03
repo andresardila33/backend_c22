@@ -36,12 +36,12 @@ export class OrdersBillsService {
       });
       const totalOrdersBills: number = this.ordersBills.length;
       const totalPages: number = Math.ceil(totalOrdersBills / limit);
-      const tablesReturn: OrderBill[] = this.ordersBills.slice(
+      const ordersBillsReturn: OrderBill[] = this.ordersBills.slice(
         (page - 1) * limit,
         (page - 1) * limit + limit,
       );
       return {
-        data: [...tablesReturn],
+        data: [...ordersBillsReturn],
         meta: {
           totalOrdersBills: totalOrdersBills,
           totalPages: totalPages,
@@ -54,12 +54,12 @@ export class OrdersBillsService {
   }
 
   async findOne(term: string): Promise<OrderBill> {
-    const table: OrderBill = await this.findByTerm(term);
-    if (!table) {
+    const orderBill: OrderBill = await this.findByTerm(term);
+    if (!orderBill) {
       const errorText = getErrorMessage('E001');
       throw new NotFoundException(errorText.replace('&', term));
     }
-    return table;
+    return orderBill;
   }
 
   async update(_id: string, updateOrdersBillDto: UpdateOrdersBillDto) {

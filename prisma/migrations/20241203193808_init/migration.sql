@@ -40,6 +40,8 @@ CREATE TABLE "table" (
     "id" UUID NOT NULL,
     "tableNumber" INTEGER NOT NULL DEFAULT 1,
     "capacity" INTEGER NOT NULL,
+    "createAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
 
     CONSTRAINT "table_pkey" PRIMARY KEY ("id")
 );
@@ -47,11 +49,12 @@ CREATE TABLE "table" (
 -- CreateTable
 CREATE TABLE "order_bill" (
     "id" UUID NOT NULL,
-    "date" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "total" DOUBLE PRECISION NOT NULL,
     "clientId" UUID NOT NULL,
     "userId" UUID NOT NULL,
     "tableId" UUID NOT NULL,
+    "createAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
 
     CONSTRAINT "order_bill_pkey" PRIMARY KEY ("id")
 );
@@ -63,6 +66,8 @@ CREATE TABLE "order_detail" (
     "unit_price" DOUBLE PRECISION NOT NULL,
     "orderBillId" UUID NOT NULL,
     "dishId" UUID NOT NULL,
+    "createAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
 
     CONSTRAINT "order_detail_pkey" PRIMARY KEY ("id")
 );
@@ -85,6 +90,8 @@ CREATE TABLE "dish_image" (
     "id" UUID NOT NULL,
     "imgUrl" TEXT NOT NULL,
     "dishId" UUID NOT NULL,
+    "createAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
 
     CONSTRAINT "dish_image_pkey" PRIMARY KEY ("id")
 );
@@ -93,6 +100,8 @@ CREATE TABLE "dish_image" (
 CREATE TABLE "category" (
     "id" UUID NOT NULL,
     "categoryName" VARCHAR(100) NOT NULL,
+    "createAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
 
     CONSTRAINT "category_pkey" PRIMARY KEY ("id")
 );
