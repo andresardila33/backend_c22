@@ -10,12 +10,15 @@ import {
   Query,
   ParseUUIDPipe,
 } from '@nestjs/common';
+import { ApiOperation, ApiTags, ApiBody, ApiBearerAuth } from '@nestjs/swagger';
 import { TablesService } from './tables.service';
-import { CreateTableDto, UpdateTableDto } from './dto';
 import { Auth } from 'src/auth/decorators';
 import { ValidRoles } from 'src/auth/enums/valid-roles';
+import { CreateTableDto, UpdateTableDto } from './dto';
 import { PaginationDto } from 'src/common/dto';
 
+@ApiBearerAuth()
+@ApiTags('tables')
 @Controller('tables')
 export class TablesController {
   constructor(private readonly tablesService: TablesService) {}
@@ -23,12 +26,21 @@ export class TablesController {
   @HttpCode(200)
   @Auth(ValidRoles.manager, ValidRoles.waiter)
   @Post()
-  createUser(@Body() createTableDto: CreateTableDto) {
+  @ApiOperation({ summary: 'Create new table' })
+  @ApiBody({
+    schema: {
+      example: {
+        tableNumber: 1,
+        capacity: 4,
+      },
+    },
+  })
+  create(@Body() createTableDto: CreateTableDto) {
     return this.tablesService.create(createTableDto);
   }
 
   @HttpCode(200)
-  @Auth(ValidRoles.manager, ValidRoles.waiter, ValidRoles.user, ValidRoles.chef)
+  @Auth(ValidRoles.manager, ValidRoles.waiter)
   @Get()
   findAll(@Query() paginationDto: PaginationDto) {
     return this.tablesService.findAll(paginationDto);

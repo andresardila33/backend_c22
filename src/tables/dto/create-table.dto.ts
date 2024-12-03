@@ -1,9 +1,11 @@
-import { IsPositive } from 'class-validator';
+import { IsInt, IsPositive } from 'class-validator';
 
 export class CreateTableDto {
+	@IsInt()
   @IsPositive()
-  tableNumber: number;
+	tableNumber: number;
 
+	@IsInt()
   @IsPositive()
-  capacity: number;
+	capacity: number;
 }

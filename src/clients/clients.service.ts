@@ -11,7 +11,7 @@ import { isUUID } from 'class-validator';
 export class ClientsService {
   constructor(private prisma: PrismaService) {}
   private clients: Client[] = []; //TODO: Refactor handle cache
-  async create(createClientDto: CreateClientDto): Promise<CreateClientDto> {
+  async create(createClientDto: CreateClientDto) {
     try {
       return await this.prisma.client.create({
         data: createClientDto,

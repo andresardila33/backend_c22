@@ -44,7 +44,7 @@ model User {
   userName   String      @unique @db.VarChar(100)
   password   String      @unique
   email      String      @unique @db.VarChar(100)
-  isActive   Boolean     @default(true) 
+  isActive   Boolean     @default(true)
   role       String[]    @default(["manager"]) @db.VarChar(10)
   createAt   DateTime    @default(now())
   updatedAt  DateTime    @updatedAt
@@ -59,9 +59,9 @@ model Client {
   lastName   String      @db.VarChar(100)
   userName   String      @unique @db.VarChar(100)
   phone      String      @db.VarChar(20)
+  orderBills OrderBill[]
   createAt   DateTime    @default(now())
   updatedAt  DateTime    @updatedAt
-  orderBills OrderBill[]
 
   @@map("client")
 }
@@ -71,13 +71,14 @@ model Table {
   tableNumber Int         @unique @default(1)
   capacity    Int
   orderBills  OrderBill[]
+  createAt    DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
 
   @@map("table")
 }
 
 model OrderBill {
   id           String        @id @unique @default(uuid()) @db.Uuid
-  date         DateTime      @default(now())
   total        Float
   client       Client        @relation(fields: [clientId], references: [id])
   clientId     String        @db.Uuid
@@ -86,6 +87,8 @@ model OrderBill {
   table        Table         @relation(fields: [tableId], references: [id])
   tableId      String        @db.Uuid
   orderDetails OrderDetail[]
+  createAt     DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
 
   @@map("order_bill")
 }
@@ -98,6 +101,8 @@ model OrderDetail {
   orderBillId String    @db.Uuid
   dish        Dish      @relation(fields: [dishId], references: [id])
   dishId      String    @db.Uuid
+  createAt    DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
 
   @@map("order_detail")
 }
@@ -110,9 +115,9 @@ model Dish {
   category     Category      @relation(fields: [categoryId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   categoryId   String        @db.Uuid
   dishImages   DishImage[]
+  orderDetails OrderDetail[]
   createAt     DateTime      @default(now())
   updatedAt    DateTime      @updatedAt
-  orderDetails OrderDetail[]
 
   @@unique([id, dishName])
   @@index([categoryId])
@@ -120,19 +125,23 @@ model Dish {
 }
 
 model DishImage {
-  id     String @id @unique @default(uuid()) @db.Uuid
-  imgUrl String
-  dish   Dish   @relation(fields: [dishId], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  dishId String @db.Uuid
+  id        String   @id @unique @default(uuid()) @db.Uuid
+  imgUrl    String
+  dish      Dish     @relation(fields: [dishId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  dishId    String   @db.Uuid
+  createAt  DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@index([dishId])
   @@map("dish_image")
 }
 
 model Category {
-  id           String @id @unique @default(uuid()) @db.Uuid
-  categoryName String @unique @db.VarChar(100)
+  id           String   @id @unique @default(uuid()) @db.Uuid
+  categoryName String   @unique @db.VarChar(100)
   dishes       Dish[]
+  createAt     DateTime @default(now())
+  updatedAt    DateTime @updatedAt
 
   @@unique([id, categoryName])
   @@map("category")

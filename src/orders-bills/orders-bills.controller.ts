@@ -1,34 +1,62 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  HttpCode,
+  Query,
+  ParseUUIDPipe,
+} from '@nestjs/common';
+import { ApiTags } from '@nestjs/swagger';
 import { OrdersBillsService } from './orders-bills.service';
-import { CreateOrdersBillDto } from './dto/create-orders-bill.dto';
-import { UpdateOrdersBillDto } from './dto/update-orders-bill.dto';
+import { Auth } from 'src/auth/decorators';
+import { ValidRoles } from 'src/auth/enums/valid-roles';
+import { CreateOrdersBillDto, UpdateOrdersBillDto } from './dto';
+import { PaginationDto } from 'src/common/dto';
 
+@ApiTags('orders-bills')
 @Controller('orders-bills')
 export class OrdersBillsController {
   constructor(private readonly ordersBillsService: OrdersBillsService) {}
 
+  @HttpCode(200)
+  @Auth(ValidRoles.manager, ValidRoles.waiter)
   @Post()
-  create(@Body() createOrdersBillDto: CreateOrdersBillDto) {
-    return this.ordersBillsService.create(createOrdersBillDto);
+  create(@Body() createOrdersBillsDto: CreateOrdersBillDto) {
+    return this.ordersBillsService.create(createOrdersBillsDto);
   }
 
+  @HttpCode(200)
+  @Auth(ValidRoles.manager, ValidRoles.waiter, ValidRoles.user, ValidRoles.chef)
   @Get()
-  findAll() {
-    return this.ordersBillsService.findAll();
+  findAll(@Query() paginationDto: PaginationDto) {
+    return this.ordersBillsService.findAll(paginationDto);
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.ordersBillsService.findOne(+id);
+  @HttpCode(200)
+  @Auth(ValidRoles.manager, ValidRoles.waiter)
+  @Get(':term')
+  findOne(@Param('term') term: string) {
+    return this.ordersBillsService.findOne(term);
   }
 
+  @HttpCode(201)
+  @Auth(ValidRoles.manager, ValidRoles.waiter)
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateOrdersBillDto: UpdateOrdersBillDto) {
-    return this.ordersBillsService.update(+id, updateOrdersBillDto);
+  update(
+    @Param('id', ParseUUIDPipe) id: string,
+    @Body() updateOrdersBillDto: UpdateOrdersBillDto,
+  ) {
+    return this.ordersBillsService.update(id, updateOrdersBillDto);
   }
 
+  @HttpCode(200)
+  @Auth(ValidRoles.manager)
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.ordersBillsService.remove(+id);
+  remove(@Param('id', ParseUUIDPipe) id: string) {
+    return this.ordersBillsService.remove(id);
   }
 }

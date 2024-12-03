@@ -15,8 +15,9 @@ import { CreateCategoryDto, UpdateCategoryDto } from './dto';
 import { Auth } from 'src/auth/decorators';
 import { ValidRoles } from 'src/auth/enums/valid-roles';
 import { PaginationDto } from 'src/common/dto';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 
+@ApiBearerAuth()
 @ApiTags('Categories')
 @Controller('categories')
 export class CategoriesController {

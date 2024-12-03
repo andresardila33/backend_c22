@@ -9,16 +9,7 @@ import { OrdersBillsModule } from './orders-bills/orders-bills.module';
 import { OrdersDetailsModule } from './orders-details/orders-details.module';
 
 @Module({
-  imports: [
-    WaitersModule,
-    DishesModule,
-    CategoriesModule,
-    AuthModule,
-    ClientsModule,
-    TablesModule,
-    OrdersBillsModule,
-    OrdersDetailsModule,
-  ],
+  imports: [WaitersModule, DishesModule, CategoriesModule, AuthModule, ClientsModule, TablesModule, OrdersBillsModule, OrdersDetailsModule],
   controllers: [],
   providers: [],
 })
